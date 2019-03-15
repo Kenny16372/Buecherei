@@ -14,7 +14,7 @@ const int START_SIZE = 100;
 
 
 void Choose(bool* loop, struct Book* Library[], int* amount){
-    printf("\nType:\nX for exit\nS for Showing all\nF for finding books\nH zum Hinzufuegen\nL zum Loeschen\n");
+    printf("\nX zum Schliessen\nS um alle Buecher zu zeigen\nF zur Buchsuche\nH zum Hinzufuegen\nL zum Loeschen\n");
     char* input = (char*) malloc(100);
     scanf("%s", input);
 
@@ -34,28 +34,10 @@ void Choose(bool* loop, struct Book* Library[], int* amount){
         delB(Library, amount);
     }
     else if (input[0]== 'h' || input[0] == 'H'){
-        size_t bufsize = 200;
-        char* isbn = (char*)malloc(bufsize);        
-        char* title = (char*)malloc(bufsize);
-        char* author = (char*)malloc(bufsize);
-        int count;
-        flush();
-        printf("Buch hinzufuegen\n\nISBN: ");
-        getline(&isbn, &bufsize, stdin);
-        isbn = strtok(isbn, "\n");
-        printf("Titel: ");
-        getline(&title, &bufsize, stdin);
-        title = strtok(title, "\n");
-        printf("Autor: ");
-        getline(&author, &bufsize, stdin);
-        author = strtok(author, "\n");
-        printf("Anzahl an Buechern: ");
-        printf("%s %s %s", isbn, title, author);
-        scanf("%d", &count);
-        addB(Library, amount, isbn, title, author, count, NULL);
+        addB(Library, amount);
     }
     else{
-        printf("Wrong input detected\n");
+        printf("Falsche Eingabe.\n");
     }
 
     free(input);

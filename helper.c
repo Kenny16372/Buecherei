@@ -8,8 +8,10 @@ void PrintBook(struct Book b){
     printf("Author: %s\n", b.author);
     printf("ISBN:   %s\n", b.isbn);
     printf("Anzahl:  %d\n", b.count);
-    printf("Last people borrowing this book:\n");
-    // WIP
+    printf("Besitzer:\n");
+    for(int i = 0; i < b.numOwners; i++){
+        printf("\t%d. %s\n", i + 1, b.owners[i]);
+    }
 }
 
 void flush(){

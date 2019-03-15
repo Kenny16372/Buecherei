@@ -34,7 +34,6 @@ void load(struct Book* lib[], const char* path, int* amount){
         b->isbn[sizeof(b->isbn)] = 0;
         printf("Die ISBN ist zu lang: Nur %s wurde gespeichert.\n", b->isbn);
       }
-      printf("%s", split);
   		split = strtok(NULL, "-");
       if(strlen(split) <= sizeof(b->title))
         strcpy(b->title, split);
@@ -53,6 +52,18 @@ void load(struct Book* lib[], const char* path, int* amount){
       }
   		split = strtok(NULL, "-");
   		b->count = atoi(split);
+      split = strtok(NULL, "-");
+      b->owners = (char**)calloc(1,1);
+      b->numOwners = 0;
+      for(int k = 1; (split = strtok(k==1?split:NULL, "/")); k++){
+        b->owners = realloc(b->owners, k * sizeof(char*));
+        b->owners[k - 1] = (char*)malloc(strlen(split) + 1);
+        strcpy(b->owners[k - 1], split);
+        b->numOwners++;
+      }
+
+
+
       lib[i] = b;
       PrintBook(*b);
     }
