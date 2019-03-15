@@ -6,20 +6,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "addDel.h"
+#include "helper.h"
+#include "search.h"
+#include <string.h>
 
 const int START_SIZE = 100;
 
-void PrintBook(struct Book b){
-    printf("Titel:  %s\n", b.title);
-    printf("Author: %s\n", b.author);
-    printf("ISBN:   %s\n", b.isbn);
-    printf("Anzahl:  %d\n", b.count);
-    printf("Last people borrowing this book:\n");
-    // WIP
-}
 
 void Choose(bool* loop, struct Book* Library[], int* amount){
-    printf("\nType:\nX for exit\nS for Showing all\nF for finding books\nH zum Hinzufuegen\n");
+    printf("\nType:\nX for exit\nS for Showing all\nF for finding books\nH zum Hinzufuegen\nL zum Loeschen\n");
     char* input = (char*) malloc(100);
     scanf("%s", input);
 
@@ -33,28 +28,29 @@ void Choose(bool* loop, struct Book* Library[], int* amount){
         }
     }
     else if (input[0]== 'f' || input[0] == 'F'){
-        //Search(Library, amount);
-        addB(Library, amount, "123456", "Das magische Baumhaus", "Cornelia Funke", 3, NULL);
-        delB(Library, amount, 'i', "123456");
+        search(Library, *amount, NULL);
     }
     else if (input[0]== 'l' || input[0] == 'L'){
-        printf("Buch loeschen\n\n");
-        // bei delb suche einbinden und nur mit index loeschen
-        delB(Library, amount, 'i', "123456");
+        delB(Library, amount);
     }
     else if (input[0]== 'h' || input[0] == 'H'){
-        char isbn[15];
-        char title[50];
-        char author[30];
+        size_t bufsize = 200;
+        char* isbn = (char*)malloc(bufsize);        
+        char* title = (char*)malloc(bufsize);
+        char* author = (char*)malloc(bufsize);
         int count;
-        // ganze zeile einscannen sonst wird nur ein wort genommen
+        flush();
         printf("Buch hinzufuegen\n\nISBN: ");
-        scanf("%s", isbn);
+        getline(&isbn, &bufsize, stdin);
+        isbn = strtok(isbn, "\n");
         printf("Titel: ");
-        scanf("%s", title);
+        getline(&title, &bufsize, stdin);
+        title = strtok(title, "\n");
         printf("Autor: ");
-        scanf("%s", author);
+        getline(&author, &bufsize, stdin);
+        author = strtok(author, "\n");
         printf("Anzahl an Buechern: ");
+        printf("%s %s %s", isbn, title, author);
         scanf("%d", &count);
         addB(Library, amount, isbn, title, author, count, NULL);
     }
@@ -67,7 +63,7 @@ void Choose(bool* loop, struct Book* Library[], int* amount){
 
 int main(){
     //List of all Books
-    struct Book** Library = (struct Book**)calloc(START_SIZE, sizeof(struct Book));
+    struct Book** Library = (struct Book**)calloc(START_SIZE, sizeof(struct Book*));
     //struct Book* Library[100] = {0};
     int amount = START_SIZE;
     load(Library, "books.txt", &amount);
@@ -75,8 +71,7 @@ int main(){
     while(loop){
         Choose(&loop, Library, &amount);
     }
-    printf("%d", amount);
-    save(Library, "dat.txt", amount);
+    save(Library, "books.txt", amount);
     free(Library);
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "load.h"
+#include "helper.h"
 
 const int INCR_PERC = 10;
 
@@ -10,18 +11,17 @@ void load(struct Book* lib[], const char* path, int* amount){
   FILE* file = fopen(path, "rt");
   if(file != NULL){
     char line [200];
-    fgets(line, 200, file);
     for(int i = 0; fgets(line, 200, file); i++){
       if(i >= *amount){
         int inc = (*amount * INCR_PERC) / 100;
         if(inc < 1) inc = 1;
         lib = (struct Book**)realloc(lib, *amount + inc);
-        for(int j = *amount; j < *amount + inc; j++){
-          lib[j] = 0;
-        }
         if(lib == NULL){
           printf("Speicherplatz nicht ausreichend.\n");
           break;
+        }
+        for(int j = *amount; j < *amount + inc; j++){
+          lib[j] = 0;
         }
       }
       struct Book* b = (struct Book*)malloc(sizeof(struct Book));
@@ -34,6 +34,7 @@ void load(struct Book* lib[], const char* path, int* amount){
         b->isbn[sizeof(b->isbn)] = 0;
         printf("Die ISBN ist zu lang: Nur %s wurde gespeichert.\n", b->isbn);
       }
+      printf("%s", split);
   		split = strtok(NULL, "-");
       if(strlen(split) <= sizeof(b->title))
         strcpy(b->title, split);
@@ -53,16 +54,19 @@ void load(struct Book* lib[], const char* path, int* amount){
   		split = strtok(NULL, "-");
   		b->count = atoi(split);
       lib[i] = b;
+      PrintBook(*b);
     }
     fclose(file);
     // Berechnung von amount
     for(int i = 0; i < *amount; i++){
       if(lib[i] == 0){
-        *amount = i - 1;
+        *amount = i;
         break;
       }
     }
   }
-  else
+  else{
     printf("Keine Datei mit dem Namen %s gefunden.", path);
+    *amount = 0;
+  }
 }

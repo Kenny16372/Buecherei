@@ -1,5 +1,6 @@
 #include "struct.h"
 #include "addDel.h"
+#include "search.h"
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -30,48 +31,22 @@ void addB(struct Book* lib[], int* amount, char* isbn, char* title, char* author
     printf("Der Autor ist zu lang: Nur %s wurde gespeichert.\n", b->author);
     }
     b->count = count;
-    printf("%d ", *amount);
     lib[(*amount)++] = b;
-    printf("%d", *amount);
 }
 
-void delB(struct Book* lib[], int* amount, char type, char* value){
-    bool deleted = false;
-    switch(type){
-        case 'i':
+void delB(struct Book* lib[], int* amount){
+    struct Book* b;
+    search(lib, *amount, &b);
+    if(b){
+        // Gebe das geloeschte Buch frei
+        free(b);
+        // Suche den Platz des geloeschten Buches und verschiebe das letzte Buch dort hin
         for(int i = 0; i < *amount; i++){
-            if(strstr(lib[i]->isbn, value)){
-                //  Free owners first
-                free(lib[i]);
+            if(lib[i] == b){
                 lib[i] = lib[--(*amount)];
-                free(lib[*amount]);
-                deleted = true;
-                break;
+                lib[*amount] = 0;
             }
         }
-        break;
-        case 't':
-        for(int i = 0; i < *amount; i++){
-            if(strstr(lib[i]->title, value)){
-                //  Free owners first
-                free(lib[i]);
-                deleted = true;
-                break;
-            }
-        }
-        break;
-        case 'a':
-        for(int i = 0; i < *amount; i++){
-            if(strstr(lib[i]->author, value)){
-                //  Free owners first
-                free(lib[i]);
-                deleted = true;
-                break;
-            }
-        }
-        break;
-    }
-    if(deleted){
         printf("Loeschen erfolgreich.\n");
     }
     else{
