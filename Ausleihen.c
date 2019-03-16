@@ -44,3 +44,43 @@ void Borrow(struct Book * b) {
 	return;
 }
 
+void HandBack(struct Book * b) {
+
+	if (b->numOwners < 1) {
+		printf("There is nothing to hand Back");
+		return;
+	}
+
+	printf("All People Borrowed this book: \n");
+
+	for (int i = 0; i < b->numOwners; i++) {
+		printf("\t%d. %s\n", i + 1, b->owners[i]);
+	}
+
+	int choice = -1;
+	bool loop = true;
+	while (1) {
+
+		printf("\nPls Type in the number of your name: ");
+		if (0 == scanf("%d", &choice)) {
+			printf("Falsche Eingabe.\n");
+			flush();
+			continue;
+		}
+		if (choice > b->numOwners || choice < 1) {
+			printf("Falsche Eingabe.\n");
+			continue;
+		}
+		break;
+	}
+	int u = 0;
+	char ** owner = (char **)malloc(sizeof(char) * 60 * b->count);
+	for (int i = 0; i < b->numOwners; i++) {
+		if (i == (choice - 1)) u = 1;
+		owner[i - u] = b->owners[i];
+	}
+	b->numOwners -= 1;
+	free(b->owners);
+	b->owners = owner;
+	return;
+}
