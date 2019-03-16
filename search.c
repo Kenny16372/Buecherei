@@ -67,6 +67,7 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
         break;
         default:
         printf("Falsche Eingabe.\n");
+		flush();
         break;
     }
     if(selVal){
@@ -83,15 +84,29 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
 }
 
 struct Book* select(struct Book* res[], int resNum){
-    int sel;
-    printf("Treffer:\n\n");
-    for(int i = 0; i < resNum; i++){
-        printf("Buch %d\n", i + 1);
-        PrintBook(*res[i]);
-        printf("\n\n");
-    }
-    printf("Bitte geben Sie die Nummer des gewuenschten Buches ein: ");
-    flush();
-    scanf("%d", &sel);
-    return res[sel - 1];
+	if (resNum < 1) {
+		printf("Keine Bücher gefunden\n");
+		return NULL;
+	}
+	else if (resNum == 1) return res[0];
+	while (1) {
+		int sel;
+		printf("Treffer:\n\n");
+		for (int i = 0; i < resNum; i++) {
+			printf("Buch %d\n", i + 1);
+			PrintBook(*res[i]);
+			printf("\n\n");
+		}
+		printf("Bitte geben Sie die Nummer des gewuenschten Buches ein: ");
+		if (0 == scanf("%d", &sel)) {
+			flush();
+			printf("Falsche Eingabe.\n");
+			continue;
+		}
+		if (sel < 1 || sel > resNum) {
+			printf("Falsche Eingabe.\n");
+			continue;
+		}
+		return res[sel - 1];
+	}
 }
