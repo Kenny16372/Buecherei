@@ -72,7 +72,7 @@ int search(struct Book* lib[], int amount, struct Book** selVal){
     }
     if(resNum == 0){
         printf("Kein Treffer.\n");
-		selVal == NULL;
+		selVal = NULL;
         return resNum;
     }
     if(selVal){
@@ -92,7 +92,7 @@ int search(struct Book* lib[], int amount, struct Book** selVal){
 struct Book* select(struct Book* res[], int resNum){
 
 	if (resNum < 1) {
-		printf("Keine Bücher gefunden\n");
+		printf("Keine Bï¿½cher gefunden\n");
 		return NULL;
 	}
 	else if (resNum == 1) return res[0];

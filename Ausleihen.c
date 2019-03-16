@@ -16,22 +16,25 @@ void Borrow(struct Book * b) {
 	char surname[20];
 	bool loop = true;
 	while (loop) {
-		printf("\nPlease enter your first name: ");
+		printf("\nVorname: ");
+		flush();
 		scanf("%s", prename);
 		flush();
-		printf("\nPlease enter your surname: ");
+		printf("\nNachname: ");
 		scanf("%s", surname);
 		flush();
 		char key[20];
-		printf("Is this Your name?\n\t %s %s\nType Y for yes \n", prename, surname);
+		printf("Ist dies Ihr Name?\n\t %s %s\nY fuer ja.\n", prename, surname);
 		scanf("%s", key);
-		if (key[0] == 'Y' || key[0] == 'y') loop = false;
+		if (key[0] == 'Y' || key[0] == 'y') 
+			loop = false;
 		flush();
 	}
 	
 	char ** owner =(char **) malloc(sizeof(char) * 60 * b->count);
 	for (int i = 0; i < b->numOwners; i++) {
 		owner[i] = b->owners[i];
+		free(b->owners[i]);
 	}
 
 	strcat(prename, " ");
@@ -47,21 +50,21 @@ void Borrow(struct Book * b) {
 void HandBack(struct Book * b) {
 
 	if (b->numOwners < 1) {
-		printf("There is nothing to hand Back");
+		printf("Dieses Buch wurde nicht ausgeliehen.\n\n");
 		return;
 	}
 
-	printf("All People Borrowed this book: \n");
+	printf("Dieses Buch hat ausgeliehen:\n");
 
 	for (int i = 0; i < b->numOwners; i++) {
 		printf("\t%d. %s\n", i + 1, b->owners[i]);
 	}
 
 	int choice = -1;
-	bool loop = true;
 	while (1) {
 
-		printf("\nPls Type in the number of your name: ");
+		printf("\nBitte geben Sie die Position Ihres Namens ein: ");
+		flush();
 		if (0 == scanf("%d", &choice)) {
 			printf("Falsche Eingabe.\n");
 			flush();
@@ -78,6 +81,7 @@ void HandBack(struct Book * b) {
 	for (int i = 0; i < b->numOwners; i++) {
 		if (i == (choice - 1)) u = 1;
 		owner[i - u] = b->owners[i];
+		free(b->owners[i]);
 	}
 	b->numOwners -= 1;
 	free(b->owners);

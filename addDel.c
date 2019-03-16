@@ -15,11 +15,11 @@ void addB(struct Book* lib[], int* amount){
     char* title = (char*)malloc(bufsize);
     char* author = (char*)malloc(bufsize);
     int count;
-    flush();
     printf("Buch hinzufuegen\n\nISBN: ");
+    flush();
     getline(&isbn, &bufsize, stdin);
     isbn = strtok(isbn, "\n");
-    printf("Titel: ");
+    printf("%sTitel: ", isbn);
     getline(&title, &bufsize, stdin);
     title = strtok(title, "\n");
     printf("Autor: ");
@@ -27,9 +27,6 @@ void addB(struct Book* lib[], int* amount){
     author = strtok(author, "\n");
     printf("Anzahl an Buechern: ");
     scanf("%d", &count);
-    free(isbn);
-    free(title);
-    free(author);
     if(strlen(isbn) < sizeof(b->isbn))
         strcpy(b->isbn, isbn);
     else {
@@ -55,6 +52,9 @@ void addB(struct Book* lib[], int* amount){
     b->numOwners = 0;
     b->owners = (char**)malloc(1);
     lib[(*amount)++] = b;
+    free(isbn);
+    free(title);
+    free(author);
 }
 
 void delB(struct Book* lib[], int* amount){
