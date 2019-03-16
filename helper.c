@@ -12,6 +12,7 @@ void PrintBook(struct Book b){
     for(int i = 0; i < b.numOwners; i++){
         printf("\t%d. %s\n", i + 1, b.owners[i]);
     }
+	printf("\n\n");
 }
 
 void flush(){

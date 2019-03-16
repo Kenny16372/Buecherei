@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "struct.h"
 #include "load.h"
-#include "main.h"
 #include "save.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include "addDel.h"
 #include "helper.h"
 #include "search.h"
+#include "Ausleihen.h"
 #include <string.h>
 
 const int START_SIZE = 100;
