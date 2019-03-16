@@ -39,7 +39,7 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
         break;
         case 't': case 'T':
         for(int i = 0; i < amount; i++){
-            if(strstr(lib[i]->author, value)){
+            if(strstr(lib[i]->title, value)){
                 if(resNum < NUM_OF_RESULTS){
                     res[resNum] = lib[i];
                     resNum++;
@@ -69,6 +69,10 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
         printf("Falsche Eingabe.\n");
         break;
     }
+    if(resNum == 0){
+        printf("Kein Treffer.\n");
+        return;
+    }
     if(selVal){
         *selVal = select(res, resNum);
     }
@@ -83,6 +87,9 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
 }
 
 struct Book* select(struct Book* res[], int resNum){
+    if(resNum == 1){
+        return res[0];
+    }
     int sel;
     printf("Treffer:\n\n");
     for(int i = 0; i < resNum; i++){
