@@ -4,4 +4,4 @@
 struct Book* select(struct Book* [], int);
 
 
-void search(struct Book* [], int, struct Book**);
+int search(struct Book* [], int, struct Book**);

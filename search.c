@@ -8,7 +8,7 @@
 
 const int NUM_OF_RESULTS = 10;
 
-void search(struct Book* lib[], int amount, struct Book** selVal){
+int search(struct Book* lib[], int amount, struct Book** selVal){
     struct Book* res[NUM_OF_RESULTS];
     for(int i = 0; i < NUM_OF_RESULTS; i++){
         res[i] = (struct Book*)calloc(1, sizeof(struct Book*));
@@ -72,7 +72,8 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
     }
     if(resNum == 0){
         printf("Kein Treffer.\n");
-        return;
+		selVal == NULL;
+        return resNum;
     }
     if(selVal){
         *selVal = select(res, resNum);
@@ -85,10 +86,11 @@ void search(struct Book* lib[], int amount, struct Book** selVal){
         }
     }
     free(res);
+	return resNum;
 }
 
 struct Book* select(struct Book* res[], int resNum){
-<<<<<<< HEAD
+
 	if (resNum < 1) {
 		printf("Keine Bücher gefunden\n");
 		return NULL;
@@ -114,20 +116,4 @@ struct Book* select(struct Book* res[], int resNum){
 		}
 		return res[sel - 1];
 	}
-=======
-    if(resNum == 1){
-        return res[0];
-    }
-    int sel;
-    printf("Treffer:\n\n");
-    for(int i = 0; i < resNum; i++){
-        printf("Buch %d\n", i + 1);
-        PrintBook(*res[i]);
-        printf("\n\n");
-    }
-    printf("Bitte geben Sie die Nummer des gewuenschten Buches ein: ");
-    flush();
-    scanf("%d", &sel);
-    return res[sel - 1];
->>>>>>> 48c8fb735f0395a1bb6da5973a0dc310828b84a3
 }

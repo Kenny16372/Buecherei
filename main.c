@@ -38,8 +38,7 @@ void Choose(bool* loop, struct Book* Library[], int* amount){
 	}
 	else if (input[0] == 'b' || input[0] == 'B') {
 		struct Book * b;
-		search(Library, *amount, &b);
-		if (b != NULL) {
+		if (0 < search(Library, *amount, &b)) {
 			Borrow(b);
 			PrintBook(*b);
 		}
