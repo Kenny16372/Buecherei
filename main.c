@@ -14,7 +14,7 @@ const int START_SIZE = 100;
 
 
 void Choose(bool* loop, struct Book* Library[], int* amount){
-    printf("\nX zum Schliessen\nS um alle Buecher zu zeigen\nF zur Buchsuche\nH zum Hinzufuegen\nL zum Loeschen\nB zum Ausleihen\n");
+    printf("\nX zum Schliessen\nS um alle Buecher zu zeigen\nF zur Buchsuche\nH zum Hinzufuegen\nL zum Loeschen\nB zum Ausleihen\nG zum Zurueckgeben\n");
     char* input = (char*) malloc(100);
     scanf("%s", input);
 
@@ -40,10 +40,15 @@ void Choose(bool* loop, struct Book* Library[], int* amount){
 		struct Book * b;
 		if (0 < search(Library, *amount, &b)) {
 			Borrow(b);
-			PrintBook(*b);
 		}
 	}
-    else{
+	else if (input[0] == 'g' || input[0] == 'G') {
+		struct Book * b;
+		if (0 < search(Library, *amount, &b)) {
+			HandBack(b);
+		}
+	}
+	else{
         printf("Falsche Eingabe.\n");
     }
 
