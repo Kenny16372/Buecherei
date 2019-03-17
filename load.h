@@ -1,4 +1,5 @@
+#pragma once
 #include "struct.h"
 
 
-void load(struct Book*[], const char*, int*);
+struct Book** load(struct Book*[], const char*, int*);

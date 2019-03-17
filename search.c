@@ -1,13 +1,13 @@
 #include "search.h"
+#include "helper.h"
 #include "struct.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "helper.h"
-
 
 const int NUM_OF_RESULTS = 10;
 
+// Buchsuche; gibt Anzahl an Treffern zurueck
 int search(struct Book* lib[], int amount, struct Book** selVal){
     struct Book* res[NUM_OF_RESULTS];
     for(int i = 0; i < NUM_OF_RESULTS; i++){
@@ -16,12 +16,17 @@ int search(struct Book* lib[], int amount, struct Book** selVal){
     int resNum = 0;
     char type;
     char value[100];
+    // Abfrage des Suchbegriffs
     printf("Suche nach ISBN(I), Titel(T) oder Autor(A)? ");
     flush();
     scanf("%c", &type);
+    if(!(type == 'i' || type == 'I' || type == 'a' || type == 'A' || type == 't' || type == 'T'))
+        return 0;
     printf("Suchbegriff: ");
     flush();
     scanf("%s", value);
+    flush();
+    // Gehe ueber das Array und speichere die Buecher, die dem Suchkriterium entsprechen
     switch(type){
         case 'i': case 'I':
         for(int i = 0; i < amount; i++){
@@ -70,15 +75,18 @@ int search(struct Book* lib[], int amount, struct Book** selVal){
 		flush();
         break;
     }
+    // Ende der Suche, falls kein Trffer
     if(resNum == 0){
         printf("Kein Treffer.\n");
 		selVal = NULL;
         return resNum;
     }
     if(selVal){
+        // Falls ein einziges Buch gefordert ist, speichere dieses in selVal
         *selVal = select(res, resNum);
     }
     else{
+        // Sonst gebe die Treffer aus
         for(int i = 0; i < resNum; i++){
             printf("Treffer %d von %d:\n", i + 1, resNum);
             PrintBook(*res[i]);
@@ -89,10 +97,10 @@ int search(struct Book* lib[], int amount, struct Book** selVal){
 	return resNum;
 }
 
+// Laesst den Benutzer ein Buch aus einer Liste auswaehlen
 struct Book* select(struct Book* res[], int resNum){
-
 	if (resNum < 1) {
-		printf("Keine B�cher gefunden\n");
+		printf("Keine Buecher gefunden\n");
 		return NULL;
 	}
 	else if (resNum == 1) return res[0];

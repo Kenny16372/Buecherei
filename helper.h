@@ -5,3 +5,5 @@
 void PrintBook(struct Book);
 
 void flush();
+
+void clear();

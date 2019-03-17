@@ -5,28 +5,30 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <stdio.h> 
 
-
+//  Erstellt ein neues Buch, welches am Ende des Arrays gespeichert wird
 void addB(struct Book* lib[], int* amount){
+    // Fragt die Infos ueber das Buch ab
     struct Book* b = (struct Book*)malloc(sizeof(struct Book));
-    size_t bufsize = 200;
-    char* isbn = (char*)malloc(bufsize);        
-    char* title = (char*)malloc(bufsize);
-    char* author = (char*)malloc(bufsize);
+    size_t INPUT_BUF_SIZE = 200;
+    char* isbn = (char*)malloc(INPUT_BUF_SIZE);       // Man koennte auch die Strings auf ihre Ziellaenge begrenzen, verliert     
+    char* title = (char*)malloc(INPUT_BUF_SIZE);      // dadurch aber Informationen ueber den Userinput, die moeglicherweise 
+    char* author = (char*)malloc(INPUT_BUF_SIZE);     // spaeter verarbeitet werden koennten (in einer spaeteren Version)
     int count;
     printf("Buch hinzufuegen\n\nISBN: ");
     flush();
-    getline(&isbn, &bufsize, stdin);
+    getline(&isbn, &INPUT_BUF_SIZE, stdin);
     isbn = strtok(isbn, "\n");
-    printf("%sTitel: ", isbn);
-    getline(&title, &bufsize, stdin);
+    printf("Titel: ");
+    getline(&title, &INPUT_BUF_SIZE, stdin);
     title = strtok(title, "\n");
     printf("Autor: ");
-    getline(&author, &bufsize, stdin);
+    getline(&author, &INPUT_BUF_SIZE, stdin);
     author = strtok(author, "\n");
     printf("Anzahl an Buechern: ");
     scanf("%d", &count);
+    // Kopiert die Infos in der richtigen Laenge in die struct Book
     if(strlen(isbn) < sizeof(b->isbn))
         strcpy(b->isbn, isbn);
     else {
@@ -57,7 +59,9 @@ void addB(struct Book* lib[], int* amount){
     free(author);
 }
 
+// Loescht ein Buch aus dem Array und verschiebt das letzte Buch an die Stelle des Geloeschten
 void delB(struct Book* lib[], int* amount){
+    // Waehlt das zu loeschende Buch aus
     struct Book* b;
     search(lib, *amount, &b);
     if(b){
